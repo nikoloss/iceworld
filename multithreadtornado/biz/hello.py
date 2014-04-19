@@ -31,3 +31,23 @@ class HelloTest(object):
         person['who']=who
         person['age']=int(age)
         return person
+        
+    @Router.route(url=r"news/today",method=Router._GET|Router._POST)
+    def test5(self,req):
+        return self.cache1()
+
+    @MemCache.lru(ttl=300)
+    def cache1(self):
+        ret = "暂无热点新闻"
+        try:
+            import urllib2
+            from lxml import html as HT
+            html = urllib2.urlopen("http://news.baidu.com", timeout = 10).read()
+            root = HT.document_fromstring(html)
+            breaking_news = root.xpath("//a[@class='a3']")
+            if breaking_news:
+                breaking_news = breaking_news[0].getchildren()[0].text
+                ret = breaking_news
+            return ret
+        except Exception,e:
+            raise e
