@@ -1,0 +1,10 @@
+{
+    "log_cnf":"dev_log.conf",
+    "redis":{
+        "standalone":{
+            "host":"localhost",
+            "port":6379
+         }
+    }
+    
+}
