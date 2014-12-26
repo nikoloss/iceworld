@@ -1,7 +1,8 @@
 #!/usr/bin/python
 #coding=utf-8
 # author Rowland
-import threading, time, inspect
+import threading
+import time
 
 CACHE_SIZE = 999
 
@@ -19,7 +20,7 @@ class Cache(object):
     @classmethod
     def fifo(cls, **kw):
         raise Exception('not implemented')
-    
+
     @classmethod
     def lookup_node(cls, prev, sentry, key):
         if not sentry or not key:
@@ -32,7 +33,7 @@ class Cache(object):
                     Cache._sentry = sentry
             return sentry
         return Cache.lookup_node(sentry, sentry['next'], key)
-       
+
     @classmethod
     def set_node(cls, node):
         if not node:
@@ -43,11 +44,12 @@ class Cache(object):
 
     @classmethod
     def lru(cls, **kw):
-        ttl = kw.get('ttl',10)
+        ttl = kw.get('ttl', 10)
+
         def deco_func(func):
             def deco_args(*argv, **kwargv):
-                #TODO 优化方法+参数的签名
-                argvs = map(str,argv)
+                #TODO 优化方法+参数的签名，TTL过期判定
+                argvs = map(str, argv)
                 if argv:
                     try:
                         if getattr(argv[0], func.__name__):
@@ -55,7 +57,8 @@ class Cache(object):
                     except:
                         pass
                 kv = str(kwargv)
-                key = func.__module__ + '|' + argv[0].__class__.__name__ + '|' +func.__name__ + '|' + ''.join(argvs) + '|' + kv
+                key = func.__module__ + '|' + argv[0].__class__.__name__ + '|' + func.__name__ + '|' + ''.join(
+                    argvs) + '|' + kv
                 #print key
                 v_node = Cache.lookup_node(None, Cache._sentry, key)
                 if not v_node:
@@ -64,8 +67,11 @@ class Cache(object):
                     v_node = {
                         'key': key,
                         'value': v,
+                        'timestamp': time.time()
                     }
                     Cache.set_node(v_node)
                 return v_node['value']
+
             return deco_args
+
         return deco_func
