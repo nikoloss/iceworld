@@ -48,7 +48,7 @@ class Cache(object):
 
         def deco_func(func):
             def deco_args(*argv, **kwargv):
-                #TODO 优化方法+参数的签名，TTL过期判定
+                #TODO 优化方法+参数的签名，TTL过期时间判定
                 argvs = map(str, argv)
                 if argv:
                     try:
