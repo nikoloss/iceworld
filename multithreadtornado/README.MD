@@ -10,10 +10,10 @@
 
 *2.Use "Router.route" to decorate a method of your business class after import Router module*
 
-*3.Go to the "bin" folder, then use command --"python serv.py" to start up
+*3.Go to the "bin" folder, then use command --"python serv.py" to start up*
 
-»ùÓÚtornado¸Ä×°µÄ¶àÏß³ÌÒµÎñ´¦ÀíÄ£ĞÍ¿ò¼Ü£¬×Ô´ø¿çÓòÇëÇó£¬json/xml²ÎÊı½âÎö£¬»º´æºÍÂ·ÓÉÓÅ»¯¡£ÊÊºÏ¶àÈËºÏ×÷µÄserviceÏµÍ³ºóÌ¨´î½¨£¡*
->ÒÉÎÊÇëÁªÏµ
+åŸºäºtornadoæ”¹è£…çš„å¤šçº¿ç¨‹ä¸šåŠ¡å¤„ç†æ¨¡å‹æ¡†æ¶ï¼Œè‡ªå¸¦è·¨åŸŸè¯·æ±‚ï¼Œjson/xmlå‚æ•°è§£æï¼Œç¼“å­˜å’Œè·¯ç”±ä¼˜åŒ–ã€‚é€‚åˆå¤šäººåˆä½œçš„serviceç³»ç»Ÿåå°æ­å»ºï¼*
+>ç–‘é—®è¯·è”ç³»
 <rowland.lan@163.com>
 
 ***no rights reserved, enjoy!!***
