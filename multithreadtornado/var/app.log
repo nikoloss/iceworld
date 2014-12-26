@@ -1,0 +1,52 @@
+[14-12-26 14:55:54][MainThread][serv.py:157] INFO: starting..., listen [8888], configurated by (E:\git\multithreadtornado\etc\includes_dev.json)
+[14-12-26 14:58:21][Thread-1][route.py:37] ERROR: list index out of range
+Traceback (most recent call last):
+  File "E:\git\multithreadtornado\lib\util\route.py", line 34, in _call_wrap
+    ret = call(*params)
+  File "E:\git\multithreadtornado\biz\hello.py", line 37, in test5
+    return self.cache1()
+  File "E:\git\multithreadtornado\lib\util\cache.py", line 97, in deco_args
+    @classmethod
+  File "E:\git\multithreadtornado\biz\hello.py", line 53, in cache1
+    raise e
+IndexError: list index out of range
+[14-12-26 15:41:34][MainThread][serv.py:157] INFO: starting..., listen [8888], configurated by (E:\git\multithreadtornado\etc\includes_dev.json)
+[14-12-26 15:41:47][Thread-1][route.py:37] ERROR: global name 'random' is not defined
+Traceback (most recent call last):
+  File "E:\git\multithreadtornado\lib\util\route.py", line 34, in _call_wrap
+    ret = call(*params)
+  File "E:\git\multithreadtornado\biz\hello.py", line 39, in test5
+    return self.pi()
+  File "E:\git\multithreadtornado\biz\hello.py", line 43, in pi
+    return sum((1 if random.random()**2+random.random()**2 <1 else 0 for i in xrange(n)))*4.0/n
+  File "E:\git\multithreadtornado\biz\hello.py", line 43, in <genexpr>
+    return sum((1 if random.random()**2+random.random()**2 <1 else 0 for i in xrange(n)))*4.0/n
+NameError: global name 'random' is not defined
+[14-12-26 15:42:50][MainThread][serv.py:157] INFO: starting..., listen [8888], configurated by (E:\git\multithreadtornado\etc\includes_dev.json)
+[14-12-26 15:44:21][MainThread][serv.py:157] INFO: starting..., listen [8888], configurated by (E:\git\multithreadtornado\etc\includes_dev.json)
+[14-12-26 15:46:57][MainThread][serv.py:157] INFO: starting..., listen [8888], configurated by (E:\git\multithreadtornado\etc\includes_dev.json)
+[14-12-26 15:47:00][Thread-1][route.py:37] ERROR: unbound method set_node() must be called with Cache instance as first argument (got dict instance instead)
+Traceback (most recent call last):
+  File "E:\git\multithreadtornado\lib\util\route.py", line 34, in _call_wrap
+    ret = call(*params)
+  File "E:\git\multithreadtornado\biz\hello.py", line 39, in test5
+    return self.pi()
+  File "E:\git\multithreadtornado\lib\util\cache.py", line 67, in deco_args
+    Cache.set_node(v_node)
+TypeError: unbound method set_node() must be called with Cache instance as first argument (got dict instance instead)
+[14-12-26 15:47:48][MainThread][serv.py:157] INFO: starting..., listen [8888], configurated by (E:\git\multithreadtornado\etc\includes_dev.json)
+[14-12-26 15:47:51][Thread-1][route.py:37] ERROR: set_node() takes exactly 1 argument (2 given)
+Traceback (most recent call last):
+  File "E:\git\multithreadtornado\lib\util\route.py", line 34, in _call_wrap
+    ret = call(*params)
+  File "E:\git\multithreadtornado\biz\hello.py", line 39, in test5
+    return self.pi()
+  File "E:\git\multithreadtornado\lib\util\cache.py", line 68, in deco_args
+    Cache.set_node(v_node)
+TypeError: set_node() takes exactly 1 argument (2 given)
+[14-12-26 15:48:16][MainThread][serv.py:157] INFO: starting..., listen [8888], configurated by (E:\git\multithreadtornado\etc\includes_dev.json)
+[14-12-26 15:50:55][MainThread][serv.py:157] INFO: starting..., listen [8888], configurated by (E:\git\multithreadtornado\etc\includes_dev.json)
+[14-12-26 15:58:12][MainThread][serv.py:157] INFO: starting..., listen [8888], configurated by (E:\git\multithreadtornado\etc\includes_dev.json)
+[14-12-26 15:59:02][MainThread][serv.py:157] INFO: starting..., listen [8888], configurated by (E:\git\multithreadtornado\etc\includes_dev.json)
+[14-12-26 16:00:43][MainThread][serv.py:157] INFO: starting..., listen [8888], configurated by (E:\git\multithreadtornado\etc\includes_dev.json)
+[14-12-26 16:04:31][MainThread][serv.py:157] INFO: starting..., listen [8888], configurated by (E:\git\multithreadtornado\etc\includes_dev.json)

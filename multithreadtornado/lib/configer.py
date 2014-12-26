@@ -15,11 +15,22 @@ class JsonConfiger(object):
         print configs.get('foo/bar') # return 'abc'
     """
 
+    _instance = None
+
     def __init__(self, encoding='utf-8'):
         self._configs = {}
         self._encoding = encoding
+        self._auto_updaters = {}
 
-    def load_file(self, file_name):
+    @classmethod
+    def get_instance(cls, *args, **kwargs):
+        """单例
+        """
+        if cls._instance == None:
+            cls._instance = cls(*args, **kwargs)
+        return cls._instance
+
+    def load_file(self, file_name, auto_refresh=True):
         """加载文件
         """
         with open(file_name, 'r') as f:
@@ -32,13 +43,17 @@ class JsonConfiger(object):
         for i in includes:
             if i[:1] not in ['/', '\\']:
                 i = os.path.join(dir_name, i)
-            self.load_file(i)
+            self.load_file(i, False)
+        if auto_refresh:
+            self._auto_refresh()
 
-    def load_str(self, str_data):
+    def load_str(self, str_data, auto_refresh=True):
         """加载字符串
         """
         configs = json.loads(str_data, encoding=self._encoding)
         self._configs.update(configs)
+        if auto_refresh:
+            self._auto_refresh()
 
     def get(self, *args):
         """获取配置内容
@@ -61,6 +76,25 @@ class JsonConfiger(object):
 
     def _get(self, key, d):
         return d.get(key, None)
+
+    def register_auto_updater(self, updater, key_path):
+        """注册需要自动更新的配置
+        """
+        key_name = '%s:%s' % (updater, key_path)
+        self._auto_updaters[key_name] = (updater, key_path)
+
+    def _auto_refresh(self):
+        """自动刷新已注册的配置器
+        """
+        for k, v in self._auto_updaters.items():
+            confs = self.get(v[1])
+            if confs == None:
+                continue
+            try:
+                v[0](confs)
+            except Exception as ex:
+                print 'configer auto refresh error:', ex
+
 
 def test():
     jsonConfig = JsonConfiger()
