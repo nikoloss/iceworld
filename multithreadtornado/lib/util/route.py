@@ -32,7 +32,7 @@ def _call_wrap(call, params):
     try:
         #logger.info('request: %s %s', handler.request.path, handler.json_args or {})
         ret = call(*params)
-        tornado.ioloop.IOLoop.instance().add_callback(lambda: params[0].finish(str(ret)))
+        tornado.ioloop.IOLoop.instance().add_callback(lambda: params[0].finish((ret))
     except Exception as ex:
         logger.exception(ex)
         tornado.ioloop.IOLoop.instance().add_callback(lambda: params[0].send_error())
