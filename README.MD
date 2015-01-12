@@ -1,4 +1,4 @@
-#multithread implementation on Tornado
+#multithread implementation based on Tornado
 *(eventloop + threadpool)
 ######a fast restful dev framework based on tornado
 
