@@ -32,8 +32,8 @@ def _call_wrap(call, params):
     try:
         #logger.info('request: %s %s', handler.request.path, handler.json_args or {})
         ret = call(*params)
-        tornado.ioloop.IOLoop.instance().add_callback(lambda: params[0].finish(ret)
-    except Exception as ex:
+        tornado.ioloop.IOLoop.instance().add_callback(lambda: params[0].finish(ret))
+    except Exception, ex:
         logger.exception(ex)
         tornado.ioloop.IOLoop.instance().add_callback(lambda: params[0].send_error())
 
@@ -160,12 +160,7 @@ class Router(object):
                         len(executor._threads),
                         executor._work_queue.qsize(),
                         path)
-            ret = {
-                'status': '99',
-                'message': es_error.get_code_msg('99'),
-                'data': {},
-            }
-            tornado.ioloop.IOLoop.instance().add_callback(lambda: reqhandler.finish(ret))
+            raise tornado.web.HTTPError(502)
             return
         mapper_node, m = Router.lookup_suitable_node(None, Router.mapper_sentry, path, method_flag)
         if mapper_node and m:

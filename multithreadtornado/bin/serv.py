@@ -20,7 +20,7 @@ sys.path.append(os.path.join(
 import tornado.ioloop
 import tornado.web
 from tornado.log import access_log
-import ujson
+import json
 
 import path, util
 from util.route import Router
@@ -53,7 +53,7 @@ class Xroute(tornado.web.RequestHandler):
         # json格式请求
         if self.request.headers.get('Content-Type', '').find("application/json") >= 0:
             try:
-                self.json_args = ujson.loads(self.request.body)
+                self.json_args = json.loads(self.request.body)
             except Exception as ex:
                 self.send_error(400)
         # xml格式请求
