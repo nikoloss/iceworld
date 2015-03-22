@@ -2,7 +2,7 @@
 *(eventloop + threadpool)
 ######a fast restful dev framework based on tornado
 
-######Take advantage of a fashionable C10K framework Turnado(ioloop).
+######Take advantage of a fashionable C10K framework Tornado(ioloop).
 
 ######ioloop throws requests to threadpool, threadpool notifies ioloop when it is done.
 
