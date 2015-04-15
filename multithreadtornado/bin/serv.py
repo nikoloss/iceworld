@@ -7,9 +7,6 @@
 import os
 import sys
 import json
-import socket
-import urllib
-import signal
 import getopt
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -20,17 +17,15 @@ sys.path.append(os.path.join(
 import tornado.ioloop
 import tornado.web
 from tornado.log import access_log
-import json
 
-import path, util
-from util.route import Router
-from util.tools import Log, XMLUtils
+from tools import Log, XMLUtils
 from lxml import etree
-from configer import JsonConfiger
 
+import route
+from configer import *
 
 class Xroute(tornado.web.RequestHandler):
-    '''doorlet'''
+    '''通用预处理'''
     def prepare(self):
         # 获得正确的客户端ip
         ip = self.request.headers.get("X-Real-Ip", self.request.remote_ip)
@@ -72,23 +67,23 @@ class Xroute(tornado.web.RequestHandler):
 
     @tornado.web.asynchronous
     def get(self, path):
-        Router.get(path, self)
+        route.Router.get(path, self)
         
     @tornado.web.asynchronous
     def post(self, path):
-        Router.post(path, self)
+        route.Router.post(path, self)
         
     @tornado.web.asynchronous
     def put(self, path):
-        Router.put(path, self)
+        route.Router.put(path, self)
         
     @tornado.web.asynchronous
     def delete(self, path):
-        Router.delete(path, self)
+        route.Router.delete(path, self)
 
     @tornado.web.asynchronous
     def options(self, path):
-        Router.options(path, self)
+        route.Router.options(path, self)
 
 
 def get_application():
@@ -96,24 +91,6 @@ def get_application():
     """
     return tornado.web.Application([(r"^/([^\.|]*)(?!\.\w+)$", Xroute)],
                 log_function=log_request)
-
-
-def init_application(conf_file):
-    """初始化应用程序
-    """
-    os.chdir(os.path.join(os.path.dirname(__file__), '..'))
-    confs = JsonConfiger.get_instance()
-    confs.load_file(conf_file)
-    log_cnf = confs.get('logging')
-    if log_cnf['config_file'][:1] not in ['/', '\\']:
-        log_cnf['config_file'] = os.path.join(
-            os.path.dirname(os.path.abspath(conf_file)),
-            log_cnf['config_file'])
-    Log.set_up(log_cnf)
-    global logger
-    logger = Log().getLog()
-    util.route.set_up(path._BIZ_PATH)
-    return confs
 
 
 def log_request(handler):
@@ -130,16 +107,24 @@ def log_request(handler):
                req.method, req.uri, handler.get_status(),
                req.remote_ip, req.request_time() )
 
+def init_application(conf_file):
+    """初始化应用程序
+    """
+    cpff = ConfigParserFromFile()
+    all_cfg = cpff.parseall(conf_file)
+    Configer.setup(all_cfg)
 
 
 if __name__=="__main__":
     # init
+    os.chdir(os.path.join(os.path.dirname(__file__), '..'))
     port = 8888
     includes = None
     opts, argvs = getopt.getopt(sys.argv[1:], "c:p:h")
     for op, value in opts:
         if op == '-c':
             includes = value
+            path._ETC_PATH = os.path.dirname(os.path.abspath(value))
         elif op == '-p':
             port = int(value)
         elif op == '-h':
@@ -152,11 +137,13 @@ if __name__=="__main__":
     if not includes:
         includes = os.path.join(path._ETC_PATH, 'includes_dev.json')
         print "no configuration found!,will use [%s] instead" % includes
-    # main
-    confs = init_application(includes)
-    logger.info("starting..., listen [%d], configurated by (%s)", port, includes)
+        # main
+    init_application(includes)
+    from serv import *
     application = get_application()
     application.listen(port)
-
+    logger = Log().getLog()
+    logger.info("starting..., listen [%d], configurated by (%s)", port, includes)
     tornado.ioloop.IOLoop.instance().start()
+
 

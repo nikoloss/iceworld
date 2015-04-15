@@ -1,7 +1,7 @@
 #encoding=utf-8
 
 import time, random
-from util.route import Router
+from route import Router
 from util.cache import Cache
 
 

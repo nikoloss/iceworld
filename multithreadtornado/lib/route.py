@@ -5,27 +5,35 @@
 # 虚拟路由总管，拦截请求转发请求到业务线程池
 # edit 2014-12-15 18:02:09
 # 修改映射表数据结构为单向链表（方便进行优化算法），增加URL冲突检测，优化性能精简代码，高负载下随机拒绝服务
-import os, inspect, sys, re, time, random
-
-import tornado.ioloop, tornado.web
-from concurrent import futures
+import os
+import inspect
+import sys
+import re
+import random
 from itertools import groupby
 
-import util.tools
+import tornado.ioloop
+import tornado.web
+from concurrent import futures
+
+import path, tools
+from configer import Configer
 
 MAX_WORKERS = 16
 
 executor = futures.ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
 
-def set_up(biz_dir):
+@Configer.register_my_setup()
+def set_up():
     global logger
-    logger = util.tools.Log().getLog()
+    logger = tools.Log().getLog()
     #automic scan dirs
-    files_list = os.listdir(biz_dir)
+    files_list = os.listdir(path._BIZ_PATH)
     files_list = set([x[:x.rfind(".")] for x in files_list if x.endswith(".py")])
     map(__import__, files_list)
     Router.pre_check()
+
 
 def _call_wrap(call, params):
     handler = params[0]
@@ -155,6 +163,7 @@ class Router(object):
 
     @classmethod
     def emit(cls, path, reqhandler, method_flag):
+        #logger.info('request coming![%s][%s]', path, method_flag)
         if not Router.verify_passport():
             logger.warn("server is under high pressure ,[free thread:%d] [queue size:%d] [request refused %s]",
                         len(executor._threads),
