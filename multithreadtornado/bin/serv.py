@@ -139,7 +139,6 @@ if __name__=="__main__":
         print "no configuration found!,will use [%s] instead" % includes
         # main
     init_application(includes)
-    from serv import *
     application = get_application()
     application.listen(port)
     logger = Log().getLog()
