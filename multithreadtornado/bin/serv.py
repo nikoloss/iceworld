@@ -110,9 +110,9 @@ def log_request(handler):
 def init_application(conf_file):
     """初始化应用程序
     """
+
     cpff = ConfigParserFromFile()
-    all_cfg = cpff.parseall(conf_file)
-    Configer.setup(all_cfg)
+    conf_file | E(cpff.parseall) | E(Configer.setup)
 
 
 if __name__=="__main__":

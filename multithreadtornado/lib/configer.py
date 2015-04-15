@@ -8,20 +8,36 @@ import traceback
 
 
 class ConfigParser(object):
+    '''
+        This abstract class provides a strategy of how to get those configurations
+        through a file or remote config ?
+    '''
     @abstractmethod
     def parseall(self, *args):
         pass
 
 
+class E(object):
+    def __init__(self, func):
+        self.func = func
+
+    def __ror__(self, inputs):
+        return self.func(inputs)
+
+
 class Configer(object):
+    '''
+        This class will hold configurations and registered setups(functions)
+        It can determine when to setup them
+    '''
     config = {}
     setups = []
 
     @classmethod
-    def register_my_setup(cls, *args, **deco):
+    def register_my_setup(cls, **deco):
         def foo(func):
-            location = args[0] if args else deco.get('look')
-            level = (args[1] if len(args) > 1 else deco.get('level')) or 99999
+            location = deco.get('look')
+            level = deco.get('level', 99999)
             Configer.setups.append({
                 'func': func,
                 'location': location,
@@ -32,7 +48,15 @@ class Configer(object):
         return foo
 
     @classmethod
-    def setup(cls, own_cfg):
+    def setup(cls, own_cfg, onlevel=0):
+        '''
+            Call all(or specific level) setup functions which registered via using
+            "Configer.register_my_setup" decorator.
+            If "onlevel" has been set, only the matched setup fucntions will be
+            loaded(or hot reloaded).
+            BE CAREFUL! The registed setup function shall apply reload logic in case
+            of a runtime-hot-reloaded callback hit.
+        '''
         Configer.setups.sort(key=lambda x: x['level'])
         Configer.config.update(own_cfg)
         #automic scan dirs
@@ -53,6 +77,9 @@ class Configer(object):
 
 
 class ConfigParserFromFile(ConfigParser):
+    '''
+        via Config Files
+    '''
     def parseall(self, fullpath):
         etc = path._ETC_PATH
         cfg = {}

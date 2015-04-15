@@ -5,6 +5,9 @@
 # 虚拟路由总管，拦截请求转发请求到业务线程池
 # edit 2014-12-15 18:02:09
 # 修改映射表数据结构为单向链表（方便进行优化算法），增加URL冲突检测，优化性能精简代码，高负载下随机拒绝服务
+# edit 2015年4月15日14:45:58
+# 修改setup规则为装饰器自动注册，方便后续提供热加载策略
+
 import os
 import inspect
 import sys
@@ -24,11 +27,17 @@ MAX_WORKERS = 16
 executor = futures.ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
 
-@Configer.register_my_setup()
+@Configer.register_my_setup(level=2)
 def set_up():
+    ''' erase all nodes
+        this function maybe called for hot deployment
+    '''
+    Router.mapper = []
+    Router.mapper_sentry = {}
+    Router.last_sentry = {}
     global logger
     logger = tools.Log().getLog()
-    #automic scan dirs
+    #automic scan dirs and initial all node
     files_list = os.listdir(path._BIZ_PATH)
     files_list = set([x[:x.rfind(".")] for x in files_list if x.endswith(".py")])
     map(__import__, files_list)
