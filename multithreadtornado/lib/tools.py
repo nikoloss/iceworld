@@ -4,11 +4,11 @@
 import os
 import logging
 import logging.config
-from configer import Configer
+from configer import conf
 import path
 
 
-@Configer.register_my_setup(look='logging', level=1)
+@conf.register_my_setup(look='logging', level=1)
 def set_up(cfg):
     log_path = os.path.join(path._ETC_PATH, cfg['config_file'])
     logging.config.fileConfig(log_path)

@@ -112,7 +112,7 @@ def init_application(conf_file):
     """
 
     cpff = ConfigParserFromFile()
-    conf_file | E(cpff.parseall) | E(Configer.setup)
+    conf_file | E(cpff.parseall) | E(conf.setup)
 
 
 if __name__=="__main__":

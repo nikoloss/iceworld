@@ -20,14 +20,14 @@ import tornado.web
 from concurrent import futures
 
 import path, tools
-from configer import Configer
+from configer import conf
 
 MAX_WORKERS = 16
 
 executor = futures.ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
 
-@Configer.register_my_setup(level=2)
+@conf.register_my_setup(level=2)
 def set_up():
     ''' erase all nodes
         this function maybe called for hot deployment

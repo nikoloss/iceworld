@@ -33,12 +33,11 @@ class Configer(object):
     config = {}
     setups = []
 
-    @classmethod
-    def register_my_setup(cls, **deco):
+    def register_my_setup(self, **deco):
         def foo(func):
             location = deco.get('look')
             level = deco.get('level', 99999)
-            Configer.setups.append({
+            self.setups.append({
                 'func': func,
                 'location': location,
                 'level': level
@@ -47,8 +46,7 @@ class Configer(object):
 
         return foo
 
-    @classmethod
-    def setup(cls, own_cfg, onlevel=0):
+    def setup(self, own_cfg, onlevel=0):
         '''
             Call all(or specific level) setup functions which registered via using
             "Configer.register_my_setup" decorator.
@@ -57,18 +55,15 @@ class Configer(object):
             BE CAREFUL! The registed setup function shall apply reload logic in case
             of a runtime-hot-reloaded callback hit.
         '''
-        Configer.setups.sort(key=lambda x: x['level'])
-        Configer.config.update(own_cfg)
-        #automic scan dirs
-        files_list = os.listdir(path._LIB_PATH)
-        files_list = set([x[:x.rfind(".")] for x in files_list if x.endswith(".py")])
-        map(__import__, files_list)
+        self.setups.sort(key=lambda x: x['level'])
+        self.config.update(own_cfg)
+
         for s in Configer.setups:
             func = s['func']
             location = s['location']
             try:
                 if location:
-                    func(Configer.config[location])
+                    func(self.config[location])
                 else:
                     func()
             except Exception:
@@ -90,3 +85,5 @@ class ConfigParserFromFile(ConfigParser):
                 icfg = self.parseall(os.path.join(etc, include))
                 cfg.update(icfg)
         return cfg
+
+conf = Configer()
