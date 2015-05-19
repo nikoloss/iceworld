@@ -61,7 +61,7 @@ class Router(object):
     _POST = 0x002
     _PUT = 0x004
     _DELETE = 0x008
-    _OPTIONS = 0x016
+    _OPTIONS = 0x010
     mapper = []
     mapper_sentry = {}
     last_sentry = {}
