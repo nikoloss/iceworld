@@ -13,6 +13,7 @@ import inspect
 import sys
 import re
 import random
+import json
 from itertools import groupby
 
 import tornado.ioloop
@@ -49,6 +50,11 @@ def _call_wrap(call, params):
     try:
         #logger.info('request: %s %s', handler.request.path, handler.json_args or {})
         ret = call(*params)
+        # stringify result
+        if isinstance(ret, dict):
+            ret = json.dumps(ret)
+        else:
+            ret = str(ret)
         tornado.ioloop.IOLoop.instance().add_callback(lambda: params[0].finish(ret))
     except Exception, ex:
         logger.exception(ex)

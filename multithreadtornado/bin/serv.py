@@ -32,6 +32,7 @@ class Xroute(tornado.web.RequestHandler):
         ip = self.request.headers.get("X-Forwarded-For", ip)
         ip = ip.split(',')[0].strip()
         self.request.remote_ip = ip
+        self.json_args = {} #initialize args
         # 允许跨域请求
         req_origin = self.request.headers.get("Origin")
         if req_origin:
