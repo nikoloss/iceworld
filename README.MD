@@ -21,7 +21,7 @@ A multithread implementation based on Tornado
 3.到“bin”目录下，使用命令"python serv.py" 启动工程，用浏览器访问步骤二中注册的路径可看到效果
 
 
-基于tornado改装的多线程业务处理模型框架，自带跨域请求，json/xml参数解析，缓存和路由优化。适合多人合作的service系统后台搭建！*
+基于tornado改装的多线程业务处理模型框架，自带跨域请求，json/xml参数解析，缓存和路由优化。适合多人合作的service系统后台搭建！
 >疑问请联系:
 <rowland.lan@163.com>
 
