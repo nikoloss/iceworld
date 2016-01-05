@@ -12,6 +12,7 @@ A multithread implementation based on Tornado
 ```bash
     sudo easy_install tornado
     sudo easy_install futures
+    sudo easy_install lxml
 ```
 ####Quick Start
 1.在“biz”目录中创建一个py文件，文件名任意但最好不要跟第三方库冲突
