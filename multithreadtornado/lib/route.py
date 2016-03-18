@@ -134,6 +134,10 @@ class Router(object):
                 }
                 Router.mapper.append(
                     '.'.join([mapper_node['moduleName'], mapper_node['className'], mapper_node['callName']]))
+                # Yes, I used linked list here
+                # Any better way to contain urls?
+                # Disadvantage: have to visit the urls list from head to end to
+                # determind 404
                 if Router.mapper_sentry:
                     Router.last_sentry['next'] = mapper_node
                     Router.last_sentry = Router.last_sentry['next']
