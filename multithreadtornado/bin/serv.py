@@ -89,7 +89,7 @@ class Xroute(tornado.web.RequestHandler):
 def get_application():
     """获取应用程序对象
     """
-    return tornado.web.Application([(r"^/([^\.|]*)(?!\.\w+)$", Xroute)],
+    return tornado.web.Application([(r"^(/[^\.|]*)(?!\.\w+)$", Xroute)],
                 log_function=log_request)
 
 

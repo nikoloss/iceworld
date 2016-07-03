@@ -10,23 +10,26 @@ class HelloTest(object):
        正则捕获的参数会自动注入到方法的参数列表中(从第二个开始)如下面例子中who
        第一个参数为tornado.web.handler对象（request）
     '''
-
-    @Router.route(url=r"hello/([a-z]+)", method=Router._GET | Router._POST)
+    @Router.route(url=r"/", method=Router._GET)
+    def home(self, req):
+        return "hello world"
+        
+    @Router.route(url=r"/hello/([a-z]+)", method=Router._GET | Router._POST)
     def test(self, req, who):
         #http://localhost:8888/hello/billy
         return "Hi," + who
 
-    @Router.route(url=r"greetings/([a-z]+)", method=Router._GET)
+    @Router.route(url=r"/greetings/([a-z]+)", method=Router._GET)
     def test2(self, req, who):
         #http://localhost:8888/greetings/rowland
         raise Exception("error")
 
-    @Router.route(url=r"book/([a-z]+)/(\d+)", method=Router._GET | Router._POST)
+    @Router.route(url=r"/book/([a-z]+)/(\d+)", method=Router._GET | Router._POST)
     def test3(self, req, categories, bookid):
         #http://localhost:8888/book/medicine/49875
         return "You are looking for a " + categories + " book\n" + "book No. " + bookid
 
-    @Router.route(url=r"json", method=Router._GET | Router._POST)
+    @Router.route(url=r"/json", method=Router._GET | Router._POST)
     def test4(self, req):
         #http://localhost:8888/json
         #print req.request.body
@@ -37,7 +40,7 @@ class HelloTest(object):
         person['age'] = int(age)
         return person
 
-    @Router.route(url=r"pi/is", method=Router._GET | Router._POST)
+    @Router.route(url=r"/pi/is", method=Router._GET | Router._POST)
     def test5(self, req):
         return self.pi()
 
