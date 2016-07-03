@@ -1,6 +1,6 @@
 #coding: utf-8
 
-import os, sys
+import os, sys, re
 import json
 from abc import *
 import path
@@ -79,7 +79,10 @@ class ConfigParserFromFile(ConfigParser):
         etc = path._ETC_PATH
         cfg = {}
         with open(fullpath, 'r') as f:
-            cfg = json.loads(f.read())
+            raw = f.read()
+            #去掉多行注释
+            raw_escape_comment = re.sub(r'[\s\t\n]+/\*[\s\S]+?\*/', '', raw)
+            cfg = json.loads(raw_escape_comment)
         if cfg.get('$includes'):
             for include in cfg['$includes']:
                 icfg = self.parseall(os.path.join(etc, include))

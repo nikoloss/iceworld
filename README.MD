@@ -12,15 +12,17 @@ A multithread implementation based on Tornado
 ```bash
     sudo easy_install tornado
     sudo easy_install futures
+    sudo easy_install lxml
 ```
-1.In "biz" folder, make a py file from demo which existed there
+####Quick Start
+1.在“biz”目录中创建一个py文件，文件名任意但最好不要跟第三方库冲突
 
-2.Use "Router.route" to decorate a method of your business class after import Router module
+2.使用 "Router.route" 装饰器注册函数到路由表中，仿造示例即可
 
-3.Go to the "bin" folder, then use command --"python serv.py" to start up
+3.到“bin”目录下，使用命令"python serv.py" 启动工程，用浏览器访问步骤二中注册的路径可看到效果
 
 
-基于tornado改装的多线程业务处理模型框架，自带跨域请求，json/xml参数解析，缓存和路由优化。适合多人合作的service系统后台搭建！*
+基于tornado改装的多线程业务处理模型框架，自带跨域请求，json/xml参数解析，缓存和路由优化。适合多人合作的service系统后台搭建！
 >疑问请联系:
 <rowland.lan@163.com>
 
