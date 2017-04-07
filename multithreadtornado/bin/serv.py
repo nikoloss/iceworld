@@ -138,7 +138,7 @@ if __name__=="__main__":
     if not includes:
         includes = os.path.join(path._ETC_PATH, 'includes_dev.json')
         print "no configuration found!,will use [%s] instead" % includes
-        # main
+    # main
     init_application(includes)
     application = get_application()
     application.listen(port)
